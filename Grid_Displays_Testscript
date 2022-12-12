@@ -1,0 +1,33 @@
+
+require 'selenium-webdriver'
+require 'pry'
+require 'rspec/expectations'
+include RSpec::Matchers
+
+def run
+setup
+yield
+teardown
+end
+
+def setup
+@browser = Selenium::WebDriver.for :chrome
+end
+
+def teardown
+@browser.quit
+end
+
+run do
+@browser.get('https://roomy-fire-houseboat.glitch.me/');
+number_field = @browser.find_element(id: 'number')
+start_button = @browser.find_element(id: 'start')
+table = @browser.find_element(id: 'table')
+row_count = 3
+
+# number_field.click
+number_field.send_keys(row_count.to_s)
+start_button.click
+binding.pry
+expect(table.displayed?).to be true
+end
